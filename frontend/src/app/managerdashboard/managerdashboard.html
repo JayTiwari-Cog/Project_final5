@@ -1,0 +1,86 @@
+<div class="managerdashboard-container">
+  <div class="dashboard-header">
+    <h2>Manager Dashboard</h2>
+    <p>Welcome to the hotel management system</p>
+  </div>
+
+  <!-- Main dashboard content - shown when no child route is active -->
+  <div class="dashboard-main-content">
+    <div class="dashboard-actions">
+      <div class="action-card hotel-card">
+        <div class="card-icon-wrapper">
+          <i class="fas fa-hotel action-icon"></i>
+        </div>
+        <div class="card-content">
+          <h4>Add Hotel Room</h4>
+          <p>Add new rooms and manage hotel inventory with advanced features</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check"></i> Room management</li>
+            <li><i class="fas fa-check"></i> Inventory tracking</li>
+            <li><i class="fas fa-check"></i> Pricing control</li>
+          </ul>
+        </div>
+        <button class="btn btn-dashboard btn-primary" (click)="showAddHotel()">
+          <i class="fas fa-cogs"></i>
+          Manage Hotels
+        </button>
+      </div>
+
+      <div class="action-card booking-card">
+        <div class="card-icon-wrapper">
+          <i class="fas fa-user-plus action-icon"></i>
+        </div>
+        <div class="card-content">
+          <h4>Add User Booking</h4>
+          <p>Create and manage customer bookings efficiently</p>
+          <ul class="feature-list">
+            <li><i class="fas fa-check"></i> Quick booking</li>
+            <li><i class="fas fa-check"></i> Customer management</li>
+            <li><i class="fas fa-check"></i> Real-time availability</li>
+          </ul>
+        </div>
+        <button class="btn btn-dashboard btn-success" (click)="showAddUser()">
+          <i class="fas fa-plus-circle"></i>
+          Add Booking
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Section -->
+  <footer class="dashboard-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h5><i class="fas fa-hotel"></i> Smart Hotel Management</h5>
+        <p>Streamline your hotel operations with our comprehensive management system</p>
+      </div>
+      <div class="footer-section">
+        <h6>Quick Links</h6>
+        <ul class="footer-links">
+          <li><a href="#" (click)="showAddHotel()"><i class="fas fa-plus"></i> Add Hotels</a></li>
+          <li><a href="#" (click)="showAddUser()"><i class="fas fa-calendar-plus"></i> Create Booking</a></li>
+          <li><a href="#" (click)="goHome()"><i class="fas fa-home"></i> Home</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h6>Contact Info</h6>
+        <div class="contact-info">
+          <p><i class="fas fa-envelope"></i> support@smarthotel.com</p>
+          <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+          <p><i class="fas fa-map-marker-alt"></i> Hotel Management HQ</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 Smart Hotel Management System. All rights reserved.</p>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+  </footer>
+
+
+</div>

@@ -1,0 +1,219 @@
+/* Page background to match the theme */
+:host {
+  display: block;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #e0eafc 0%, #cfdef3 50%, #f0f8ff 100%);
+  padding: 2rem 0;
+}
+
+.payment-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 3rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-form::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+  border-radius: 24px 24px 0 0;
+}
+ 
+.payment-form h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  letter-spacing: -0.5px;
+}
+ 
+.payment-form label {
+  display: block;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+ 
+.payment-form input,
+.payment-form select {
+  width: 100%;
+  padding: 1rem 1.25rem;
+  margin-top: 0.5rem;
+  border: 2px solid rgba(59, 130, 246, 0.2);
+  border-radius: 16px;
+  font-size: 1rem;
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+ 
+.payment-form input:focus,
+.payment-form select:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1), 0 4px 16px rgba(59, 130, 246, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+ 
+.payment-form select {
+  background: linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(241, 245, 249, 0.8) 100%);
+  cursor: pointer;
+}
+ 
+.payment-form .method-options {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+ 
+.payment-form .method-options label {
+  font-weight: normal;
+  color: #475569;
+  text-transform: none;
+  letter-spacing: normal;
+}
+ 
+.payment-form button[type="submit"] {
+  margin-top: 2.5rem;
+  width: 100%;
+  padding: 1.25rem;
+  background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-form button[type="submit"]:hover {
+  background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+  box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5);
+  transform: translateY(-2px);
+}
+
+.payment-form button[type="submit"]:active {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+}
+
+.payment-form button[type="submit"]:disabled {
+  background: linear-gradient(135deg, #9ca3af 0%, #d1d5db 100%);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+ 
+.payment-form .error {
+  color: #ef4444;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  font-weight: 500;
+}
+
+/* Checkbox styling */
+.payment-form input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.75rem;
+  margin-top: 0;
+  transform: scale(1.2);
+  accent-color: #3b82f6;
+}
+
+.payment-form label:has(input[type="checkbox"]) {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
+  color: #475569;
+  cursor: pointer;
+  padding: 1rem;
+  background: rgba(59, 130, 246, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  transition: all 0.2s ease;
+}
+
+.payment-form label:has(input[type="checkbox"]):hover {
+  background: rgba(59, 130, 246, 0.08);
+  border-color: rgba(59, 130, 246, 0.2);
+}
+
+/* Amount field special styling */
+.payment-form input[readonly] {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%);
+  border-color: rgba(16, 185, 129, 0.3);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #059669;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .payment-form {
+    margin: 1rem;
+    padding: 2rem;
+    max-width: none;
+  }
+  
+  .payment-form h2 {
+    font-size: 1.8rem;
+  }
+}
+ 
+#btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  font-weight: 600;
+}
+
+#btn:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}

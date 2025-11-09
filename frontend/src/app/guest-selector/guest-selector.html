@@ -1,0 +1,102 @@
+<div *ngIf="isVisible" class="guest-selector-overlay" (click)="closeSelector()">
+  <div class="guest-selector" (click)="$event.stopPropagation()">
+    <div class="selector-header">
+      <h3><i class="fas fa-users me-2"></i>Select Guests & Rooms</h3>
+      <button class="close-button" (click)="closeSelector()">
+        ×
+      </button>
+    </div>
+ 
+    <div class="selector-content">
+      <div class="selector-row">
+        <div class="selector-info">
+          <div class="selector-label">
+            <i class="fas fa-user me-2"></i>Adults
+          </div>
+          <div class="selector-description">Ages 13 or above</div>
+        </div>
+        <div class="counter-controls">
+          <button
+            class="counter-button minus"
+            (click)="decrement('adults')"
+            [disabled]="selection.adults <= 1"
+            [class.disabled]="selection.adults <= 1">
+            −
+          </button>
+          <span class="counter-value">{{selection.adults}}</span>
+          <button
+            class="counter-button plus"
+            (click)="increment('adults')"
+            [disabled]="selection.adults >= 10"
+            [class.disabled]="selection.adults >= 10">
+            +
+          </button>
+        </div>
+      </div>
+ 
+      <div class="selector-row">
+        <div class="selector-info">
+          <div class="selector-label">
+            <i class="fas fa-child me-2"></i>Children
+          </div>
+          <div class="selector-description">Ages 2-12</div>
+        </div>
+        <div class="counter-controls">
+          <button
+            class="counter-button minus"
+            (click)="decrement('children')"
+            [disabled]="selection.children <= 0"
+            [class.disabled]="selection.children <= 0">
+            −
+          </button>
+          <span class="counter-value">{{selection.children}}</span>
+          <button
+            class="counter-button plus"
+            (click)="increment('children')"
+            [disabled]="selection.children >= 10"
+            [class.disabled]="selection.children >= 10">
+            +
+          </button>
+        </div>
+      </div>
+ 
+      <div class="selector-row">
+        <div class="selector-info">
+          <div class="selector-label">
+            <i class="fas fa-bed me-2"></i>Rooms
+          </div>
+          <div class="selector-description">Number of rooms needed</div>
+        </div>
+        <div class="counter-controls">
+          <button
+            class="counter-button minus"
+            (click)="decrement('rooms')"
+            [disabled]="selection.rooms <= 1"
+            [class.disabled]="selection.rooms <= 1">
+            −
+          </button>
+          <span class="counter-value">{{selection.rooms}}</span>
+          <button
+            class="counter-button plus"
+            (click)="increment('rooms')"
+            [disabled]="selection.rooms >= 10"
+            [class.disabled]="selection.rooms >= 10">
+            +
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="selector-footer">
+      <div class="selection-summary">
+        <i class="fas fa-info-circle me-2"></i>
+       
+      </div>
+      <button class="apply-button" (click)="closeSelector()">
+        <i class="fas fa-check me-2"></i>Apply
+      </button>
+    </div>
+  </div>
+</div>
+ 
+ 

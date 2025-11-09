@@ -1,0 +1,199 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.app-content {
+  flex: 1;
+  padding-bottom: 2rem;
+}
+
+.navbar {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+/* Manager Navigation Styling */
+.navbar.bg-manager {
+  background: linear-gradient(135deg, #e67e22 0%, #d35400 100%) !important;
+  box-shadow: 0 2px 15px rgba(230, 126, 34, 0.3);
+}
+
+.navbar.bg-manager .navbar-brand {
+  color: white !important;
+}
+
+.navbar.bg-manager .btn-outline-light {
+  border-color: rgba(255, 255, 255, 0.8);
+  color: white;
+}
+
+.navbar.bg-manager .btn-outline-light:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  color: white;
+}
+
+.navbar.bg-manager .btn-light {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 255, 255, 0.9);
+  color: #d35400;
+}
+
+.navbar.bg-manager .btn-light:hover {
+  background-color: white;
+  border-color: white;
+  color: #d35400;
+}
+
+.manager-badge {
+  font-size: 0.7rem;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.2rem 0.5rem;
+  border-radius: 10px;
+  margin-left: 0.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.navbar-brand {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.btn {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.hero-section {
+  padding: 3rem 0;
+}
+
+.hero-section h1 {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.card {
+  transition: all 0.3s ease;
+  border-radius: 15px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+
+.auth-section, .user-section {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+.dropdown-menu {
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  border: none;
+}
+
+.dropdown-item {
+  padding: 0.75rem 1.5rem;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+/* Page headers */
+.page-header {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  margin-bottom: 2rem;
+}
+
+/* Dashboard improvements */
+.card-header {
+  border-radius: 15px 15px 0 0 !important;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.list-unstyled li {
+  padding: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.feature-box {
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.feature-box:hover {
+  background: rgba(102, 126, 234, 0.2);
+  border-color: rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px);
+}
+
+.feature-box h6 {
+  color: #495057;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Login Selection Cards */
+.guest-card {
+  transition: all 0.3s ease;
+  border: 2px solid transparent !important;
+}
+
+.guest-card:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.2) !important;
+}
+
+.manager-card {
+  transition: all 0.3s ease;
+  border: 2px solid transparent !important;
+}
+
+.manager-card:hover {
+  border-color: #28a745 !important;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.2) !important;
+}
+
+.register-section {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Navigation improvements */
+.navbar .btn {
+  margin: 0 0.25rem;
+}
+
+.navbar .btn:hover {
+  transform: translateY(-1px);
+}

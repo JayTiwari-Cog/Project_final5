@@ -1,0 +1,113 @@
+<div *ngIf="!openBookingDetails" class="booking-confirmation">
+  <div class="booking-header">
+    <button class="back-btn" (click)="goBack()">← Back to Search</button>
+    <h2>Booking Confirmation</h2>
+    <!-- Removed the closeBooking() reference since we removed that method -->
+  </div>
+  
+  <div class="booking-content" *ngIf="hotel">
+    <div class="hotel-info">
+      <h3>{{ hotel.hotelName }}</h3>
+      <p><i class="fas fa-map-marker-alt"></i> {{  hotel.address.street+", "+hotel.address.postalCode +", "+hotel.address.city }}</p>
+      <div *ngIf="hotel.amenities?.length" class="amenities">
+        <strong>Amenities:</strong>
+        <span *ngFor="let a of hotel.amenities; let i = index">
+          <span>{{ a }}</span><span *ngIf="i < hotel.amenities.length - 1">, </span>
+        </span>
+      </div>
+      <p class="price"><i class="fas fa-rupee-sign"></i> {{ hotel.pricePerNight|currency:'INR'}}  per night</p>
+    </div>
+    
+    <div class="stay-details">
+      <h4>Stay Details</h4>
+      <p><strong>Check-in:</strong> {{ checkIn | date:'fullDate' }}</p>
+      <p><strong>Check-out:</strong> {{ checkOut | date:'fullDate' }}</p>
+      <div *ngIf="guestSelection" class="guest-info">
+        <p><strong>Guests:</strong> {{ guestSelection.adults }} {{ guestSelection.adults === 1 ? 'Adult' : 'Adults' }}<span *ngIf="guestSelection.children > 0">, {{ guestSelection.children }} {{ guestSelection.children === 1 ? 'Child' : 'Children' }}</span></p>
+        <p><strong>Rooms:</strong> {{ guestSelection.rooms }} {{ guestSelection.rooms === 1 ? 'Room' : 'Rooms' }}</p>
+      </div>
+    </div>
+    
+    <div class="booking-actions">
+      <button class="feedback-btn" (click)="openFeedbackModal()">
+        <i class="fas fa-comments"></i> View Feedback
+      </button>
+      <button class="confirm-btn" (click)="confirmBooking()">
+        <i class="fas fa-check"></i> Confirm Booking
+      </button>
+    </div>
+  </div>
+  
+  <div *ngIf="!hotel" class="no-hotel-selected">
+    <p>No hotel selected. Please go back and select a hotel.</p>
+    <button (click)="goBack()">Back to Hotel Search</button>
+  </div>
+</div>
+
+<!-- Updated this line to use goBack() instead of the removed closeBooking() method -->
+<app-booking-details *ngIf="openBookingDetails"   (close)="goBack()"></app-booking-details>
+
+<!-- Feedback Modal -->
+<div class="modal-overlay" *ngIf="showFeedbackModal" (click)="closeFeedbackModal()">
+  <div class="feedback-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Guest Reviews & Feedback</h3>
+      <button type="button" class="close-btn" (click)="closeFeedbackModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="hotel-info" *ngIf="hotel">
+        <h4>{{ hotel.hotelName }}</h4>
+        <p class="text-muted">{{ hotel.address.city }}</p>
+      </div>
+
+      <!-- Loading state -->
+      <div *ngIf="loadingFeedback" class="loading-feedback">
+        <i class="fas fa-spinner fa-spin"></i> Loading feedback...
+      </div>
+
+      <!-- No feedback available -->
+      <div *ngIf="!loadingFeedback && (!feedbackList || feedbackList.length === 0)" class="no-feedback">
+        <i class="fas fa-comment-slash"></i>
+        <h5>No Reviews Yet</h5>
+        <p>Be the first to share your experience with this hotel!</p>
+      </div>
+
+      <!-- Feedback list -->
+      <div *ngIf="!loadingFeedback && feedbackList && feedbackList.length > 0" class="feedback-list">
+        <div *ngFor="let feedback of feedbackList" class="feedback-item">
+          <div class="feedback-header">
+            <div class="user-info">
+              <div class="user-avatar">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="user-details">
+                <h6>{{  'Anonymous User' }}</h6>
+                <small class="text-muted">{{ feedback.createdAt | date:'mediumDate' }}</small>
+              </div>
+            </div>
+            <div class="rating">
+              <span *ngFor="let star of getStarArray(5)" 
+                    class="star" 
+                    [class.filled]="star <= feedback.rating">
+                ★
+              </span>
+              <span class="rating-number">({{ feedback.rating }}/5)</span>
+            </div>
+          </div>
+          <div class="feedback-content">
+            <p>{{ feedback.comment }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeFeedbackModal()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

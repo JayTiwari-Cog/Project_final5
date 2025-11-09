@@ -1,0 +1,50 @@
+<div class="app-container">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark" 
+       [class.bg-primary]="!isManagerRoute" 
+       [class.bg-manager]="isManagerRoute">
+    <div class="container">
+      <a class="navbar-brand" (click)="showHome()" style="cursor: pointer;">
+        <i class="fas fa-hotel me-2"></i>
+        Smart Hotel Booking
+        <span *ngIf="isManagerRoute" class="manager-badge">Manager</span>
+      </a>
+      
+      <div class="navbar-nav ms-auto">
+        <!-- Buttons visible only when NOT logged in -->
+        <div *ngIf="!isLoggedIn" class="btn-group me-2">
+          <button class="btn btn-light" (click)="showGuestLogin()">
+            <i class="bi bi-person-circle"></i> Login
+          </button>
+        </div>
+        <button *ngIf="!isLoggedIn" class="btn btn-outline-light" (click)="showRegister()">
+          <i class="bi bi-person-plus"></i> Register
+        </button>
+        
+        <!-- Buttons visible only when logged in -->
+        <button *ngIf="isLoggedIn" class="btn btn-outline-light me-2" (click)="showMyBookings()">
+          <i class="bi bi-calendar-check"></i> 
+          {{ userRole === 'manager' ? 'Manage Bookings' : 'My Bookings' }}
+        </button>
+        <div *ngIf="isLoggedIn" class="dropdown me-2">
+          <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i> User Profile
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="showDashboard()" style="cursor: pointer;">
+              <i class="bi bi-speedometer2"></i> Dashboard
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" (click)="logout()" style="cursor: pointer;">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="app-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

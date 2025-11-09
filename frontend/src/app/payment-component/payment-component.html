@@ -1,0 +1,26 @@
+  
+<form #paymentForm="ngForm" (ngSubmit)="submitPayment(paymentForm)" class="payment-form">
+  <h2>Payment Gateway</h2>
+  
+  <button type="button" id="btn" (click)="closeBooking()">X</button>
+ 
+  <label>Amount</label>
+  <input type="number" [value]="guestSelection.rooms * price " readonly />
+
+ 
+  <label>Payment Method</label>
+  <select [(ngModel)]="paymentMethod" name="paymentMethod" required>
+    <option value="Card">Card</option>
+     
+    <option value="UPI">UPI</option>
+    <option value="Netbanking">Netbanking</option>
+  </select>
+ 
+  <label>
+    <input type="checkbox" [(ngModel)]="agreeToTerms" name="agreeToTerms" required />
+    I agree to the terms and conditions
+  </label>
+ 
+  <button type="submit" [disabled]="paymentForm.invalid">Pay Now</button>
+</form>
+ 

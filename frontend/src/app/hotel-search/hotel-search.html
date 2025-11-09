@@ -1,0 +1,74 @@
+<div class="smart-hotel-booking-root">
+  <div class="header-section">
+    <h1 class="main-title">Smart Hotel Booking</h1>
+  </div>
+  <hr class="main-divider" />
+  <div class="search-box">
+    <div class="search-instructions">
+      <p><i class="fas fa-info-circle"></i> Please select your check-in and check-out dates to view available hotels. You can also enter a location/hotel name to filter results.</p>
+    </div>
+    <form #searchForm="ngForm" (ngSubmit)="triggerSearch(searchForm)">
+      <div class="input-group">
+        <input
+          type="text"
+          name="searchTerm"
+          [(ngModel)]="searchTerm"
+          
+          placeholder="Location/Hotel Name (Optional)"
+        />
+   
+        <!-- Dates section -->
+        <input 
+          type="date" 
+          name="checkInDate"
+          [min]="today" 
+          [(ngModel)]="checkInDate" 
+          placeholder="Check-in date" 
+          required 
+        />
+        <input 
+          type="date" 
+          name="checkOutDate"
+          [min]="checkInDate" 
+          [(ngModel)]="checkOutDate" 
+          placeholder="Check-out date" 
+          required 
+        />
+
+        <!-- Guest selection -->
+        <div class="guest-selector" (click)="$event.stopPropagation()">
+          <div class="guest-select" (click)="toggleGuestSelector()">{{guestSelectionText}}</div>
+          <app-guest-selector
+            *ngIf="showGuestSelector"
+            [isVisible]="true"
+            (selectionChange)="onGuestSelectionChange($event)"
+            (close)="closeGuestSelector()"
+          ></app-guest-selector>
+        </div>
+   
+        <button 
+          type="submit" 
+          [disabled]="!checkInDate || !checkOutDate" 
+          [class.disabled]="!checkInDate || !checkOutDate">
+          Search
+        </button>
+      </div>
+      <div class="error" *ngIf="dateError">{{ dateError }}</div>
+    </form>
+  </div>
+ 
+  <div *ngIf="searchTriggered" class="hotel-list">
+    <div
+      *ngFor="let hotel of hotels | hotelFilter:searchTerm"
+      class="hotel-card"
+    >
+      <div class="card-background"></div>
+      <div class="card-content">
+        <h3 class="hotel-name">{{ hotel.hotelName }}</h3>
+        <p class="hotel-location">{{hotel.address.city}}</p>
+        <div class="price-tag">₹{{ hotel.pricePerNight }}</div>
+        <button class="book-btn" (click)="bookHotel(hotel)">Book Now</button>
+      </div>
+    </div>
+  </div>
+</div>
