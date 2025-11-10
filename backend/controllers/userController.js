@@ -3,6 +3,7 @@ import UserCreds from "../models/UserCreds.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { validationResult } from 'express-validator';
+import { blacklistedTokens } from "../middleware/blacklisting_token.js";
 export const registerUser = async (req, res) => {
     // Check express-validator results first
     const errors = validationResult(req);
@@ -90,6 +91,7 @@ export const loginUser = async (req, res) => {
 }
 
 export const verify = (req, res) => {
+    console.log("Inside verify");
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -100,6 +102,19 @@ export const verify = (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         return res.status(200).json({ success: true, message: 'Token is valid', userId: decoded.userId });
     } catch (error) {
-        return res.status(401).json({ success: false, message: 'Invalid token', error: error.message });
+        return res.status(401).json({ success: false, message: 'Invalid token controller me', error: error.message });
     }
 }
+
+export const logoutUser = async (req, res) => {
+
+ 
+ const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (token) {
+    blacklistedTokens.add(token);
+  }
+
+  res.json({ message: 'Logged out successfully' });
+};

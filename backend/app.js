@@ -25,11 +25,12 @@ app.use(passport.initialize());
 app.use("/api",routes);
 
 
-app.use('/api',hotel)
+app.use('/api',hotel);
 app.use('/api',guest);
 app.use('/api',feedback);
 app.use('/api',booking);
 app.use('/file',down);
-// app.use('/file',down);
+
+
 
 export default app;
