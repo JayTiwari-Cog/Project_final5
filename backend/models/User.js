@@ -20,10 +20,6 @@ const UserSchema = new mongoose.Schema({
         enum: ['user', 'manager'],
         default: 'user'
     },
-    feedbacks: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Feedback'
-    }]
 }, { timestamps: true });
 
 const User = mongoose.model("User", UserSchema);

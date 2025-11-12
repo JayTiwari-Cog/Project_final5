@@ -38,6 +38,7 @@ export class ManageBookingsComponent implements OnInit {
         console.log('All bookings loaded:', response);
         this.allBookings = response.bookings || response || [];
         this.filteredBookings = [...this.allBookings];
+        console.log('Filtered bookings initialized:', this.filteredBookings);
         this.loading = false;
       },
       error: (error: any) => {

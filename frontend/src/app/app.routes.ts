@@ -12,7 +12,7 @@ import { ManageBookingsComponent } from './manage-bookings/manage-bookings.compo
 import { ManagerAddUserComponent } from './manager-add-user/manager-add-user';
 import { ManagerAddHotelComponent } from './manager-add-hotel/manager-add-hotel';
 import { PaymentComponent } from './payment-component/payment-component';
-import { AuthGuard } from './guards/auth.guard';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,27 +24,30 @@ export const routes: Routes = [
   // User routes
   { 
     path: 'user', 
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
+    data: { role: 'user' },
     children: [
       { path: 'hotel-search', component: HotelSearch },
       { path: 'booking', component: Booking },
       { path: 'payment', component: PaymentComponent },
       { path: 'my-bookings', component: MyBookingsComponent },
- 
-      { path: '', redirectTo: 'hotel-search', pathMatch: 'full' }
+      { path: '', redirectTo: 'hotel-search', pathMatch: 'full' },
+      { path: '**', redirectTo: '/home' } // Redirect any invalid user routes to home
     ]
   },
   
   // Manager routes
   { 
     path: 'manager', 
-    canActivate: [AuthGuard],
+    canActivate: [authGuard],
+    data: { role: 'manager' },
     children: [
       { path: 'dashboard', component: ManagerDashboardComponent },
       { path: 'manage-bookings', component: ManageBookingsComponent },
       { path: 'add-user', component: ManagerAddUserComponent },
       { path: 'add-hotel', component: ManagerAddHotelComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '**', redirectTo: '/home' } // Redirect any invalid manager routes to home
     ]
   },
   

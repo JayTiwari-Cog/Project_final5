@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
 const down = Router();
 const upload = multer();
 
-export const downloadFile =  async (req, res) => {
+export const downloadFile =  async (req, res, next) => {
   try {
     const { hotelName, bookingDate, guestName, rooms } = req.body;
 
@@ -46,7 +46,9 @@ Thank you for choosing our hotel!
     res.download(filePath, fileName, (err) => {
       if (err) {
         console.error('Error sending file:', err);
-        res.status(500).send('Error downloading file');
+        const error = new Error('Error downloading file');
+        error.statusCode = 500;
+        next(error);
       } else {
         console.log('File sent for download');
         // Clean up the file after download
@@ -59,6 +61,7 @@ Thank you for choosing our hotel!
     });
   } catch (error) {
     console.error('Error generating invoice:', error);
-    res.status(500).json({ error: 'Failed to generate invoice' });
+    error.statusCode = 500;
+    next(error);
   }
 };

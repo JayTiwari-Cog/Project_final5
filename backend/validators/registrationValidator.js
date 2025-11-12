@@ -68,20 +68,7 @@ const registrationSchema = checkSchema({
       }
     }
   },
-  agreeTerms: {
-    in: ['body'],
-    isBoolean: {
-      errorMessage: 'Terms acceptance must be a boolean value'
-    },
-    custom: {
-      options: value => {
-        if (!value) {
-          throw new Error('Please accept the Terms and Conditions to continue');
-        }
-        return true;
-      }
-    }
-  }
+   
 });
  
 export default registrationSchema;

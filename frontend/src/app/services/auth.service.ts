@@ -18,13 +18,13 @@ export class AuthService {
   private searchStateService = inject(SearchStateService);
 
   constructor() {
-    // Check for existing login state in localStorage
+    // Check for existing login state in sessionStorage
     this.loadLoginState();
   }
 
   private loadLoginState(): void {
-    const storedUser = localStorage.getItem('currentUser');
-    const storedLoginStatus = localStorage.getItem('isLoggedIn');
+    const storedUser = sessionStorage.getItem('currentUser');
+    const storedLoginStatus = sessionStorage.getItem('isLoggedIn');
     
     if (storedLoginStatus === 'true' && storedUser) {
       this.isLoggedIn = true;
@@ -33,15 +33,15 @@ export class AuthService {
   }
 
   private saveLoginState(): void {
-    localStorage.setItem('isLoggedIn', this.isLoggedIn.toString());
+    sessionStorage.setItem('isLoggedIn', this.isLoggedIn.toString());
     if (this.currentUser) {
-      localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+      sessionStorage.setItem('currentUser', JSON.stringify(this.currentUser));
     }
   }
 
   private clearLoginState(): void {
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('currentUser');
   }
 
   processLogin(email: string, password: string): LoginResult {

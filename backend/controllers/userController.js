@@ -3,8 +3,10 @@ import UserCreds from "../models/UserCreds.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { validationResult } from 'express-validator';
-import { blacklistedTokens } from "../middleware/blacklisting_token.js";
-export const registerUser = async (req, res) => {
+import Blacklist from "../models/BlackList.js";
+import BlackList from "../models/BlackList.js";
+
+export const registerUser = async (req, res, next) => {
     // Check express-validator results first
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -16,12 +18,16 @@ export const registerUser = async (req, res) => {
     
     try{
         if(password !== confirmPassword){
-            return  res.status(400).json({message: "Passwords do not match"});
+            const error = new Error("Passwords do not match");
+            error.statusCode = 400;
+            return next(error);
         }
 
         if(!name || !email || !phoneNumber || !password){
             console.log(name,email,phoneNumber,password);
-            return res.status(400).json({message: "All fields are required"});
+            const error = new Error("All fields are required");
+            error.statusCode = 400;
+            return next(error);
         }
          const pattern=/^[a-zA-Z0-9._%+-]+@company\.com$/;
          const managerEmail = pattern.test(email);
@@ -31,7 +37,9 @@ export const registerUser = async (req, res) => {
          });
 
          if(existingUser){
-            return res.status(400).json({message: "User with given email or phone number already exists"});
+            const error = new Error("User with given email or phone number already exists");
+            error.statusCode = 400;
+            return next(error);
          }
 
          const user= await User.create({
@@ -48,11 +56,12 @@ export const registerUser = async (req, res) => {
          return res.status(201).json({message: "User registered successfully", userId: user._id});
     }
     catch(error){
-        return res.status(500).json({message: "Server error"});
+        error.statusCode = 500;
+        next(error);
     }
 
 }
-export const loginUser = async (req, res) => {
+export const loginUser = async (req, res, next) => {
     const {email, password} = req.body;
     // Check express-validator results first
     const errors = validationResult(req);
@@ -61,7 +70,9 @@ export const loginUser = async (req, res) => {
     }
     try{
         if(!email || !password){
-            return res.status(400).json({message: "All fields are required"});
+            const error = new Error("All fields are required");
+            error.statusCode = 400;
+            return next(error);
         }
         const userDetails= await User.findOne({
             email:email
@@ -70,13 +81,17 @@ export const loginUser = async (req, res) => {
             email:email
         });
         if(!user){
-            return res.status(400).json({message: "Invalid email or password"});
+            const error = new Error("Invalid email or password");
+            error.statusCode = 400;
+            return next(error);
         }
         const isPasswordValid= bcrypt.compareSync(password,user.password);
         if(!isPasswordValid){
-            return res.status(400).json({message: "Invalid email or password"});
+            const error = new Error("Invalid email or password");
+            error.statusCode = 400;
+            return next(error);
         }
-        const token= jwt.sign({userId:user._id},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES_IN});
+        const token= jwt.sign({userId:user._id,role:userDetails.role},process.env.JWT_SECRET,{expiresIn:process.env.JWT_EXPIRES_IN});
        
  return res.status(200).json({
   token: token,
@@ -86,35 +101,35 @@ export const loginUser = async (req, res) => {
 
     }
     catch(error){
-        return res.status(500).json({message: "Server error"});
+        error.statusCode = 500;
+        next(error);
     }
 }
 
-export const verify = (req, res) => {
-    console.log("Inside verify");
+// 
+
+ 
+
+export const logout = async (req, res, next) => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ success: false, message: 'No token provided' });
+        const error = new Error("No token provided");
+        error.statusCode = 401;
+        return next(error);
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        return res.status(200).json({ success: true, message: 'Token is valid', userId: decoded.userId });
-    } catch (error) {
-        return res.status(401).json({ success: false, message: 'Invalid token controller me', error: error.message });
+
+        const blackListedToken = await BlackList.create({
+            token: token,
+        })
+        return res.status(200).json({ message: 'Logged out successfully' });
+
+
+}catch (error) {   
+    error.statusCode = 500;
+    next(error);
     }
 }
-
-export const logoutUser = async (req, res) => {
-
- 
- const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token) {
-    blacklistedTokens.add(token);
-  }
-
-  res.json({ message: 'Logged out successfully' });
-};

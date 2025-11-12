@@ -9,7 +9,7 @@ import { validationResult } from 'express-validator';
   // adjust path as needed
   // adjust path as needed
 
-export const createGuest = async (req, res) => {
+export const createGuest = async (req, res, next) => {
     console.log("Inside createGuest");
     const { fullName, email, country, phone, guestDetails } = req.body;
 
@@ -35,20 +35,21 @@ export const createGuest = async (req, res) => {
         // Handle duplicate key error
         if (error.code === 11000) {
             const duplicateField = Object.keys(error.keyValue)[0];
-            return res.status(409).json({
-                message: `Guest with this ${duplicateField} already exists.`,
-                field: duplicateField,
-                value: error.keyValue[duplicateField]
-            });
+            const duplicateError = new Error(`Guest with this ${duplicateField} already exists.`);
+            duplicateError.statusCode = 409;
+            duplicateError.field = duplicateField;
+            duplicateError.value = error.keyValue[duplicateField];
+            return next(duplicateError);
         }
 
         console.error("Error creating guest:", error);
-        return res.status(500).json({ message: "Server error" });
+        error.statusCode = 500;
+        next(error);
     }
 };
 
 
-export const createBooking= async(req,res)=>{
+export const createBooking= async(req,res,next)=>{
     console.log("Inside createBooking");
     const {userId,hotelName,fullName,startDate,endDate}=req.body;
 
@@ -56,7 +57,9 @@ export const createBooking= async(req,res)=>{
 
     try{
         if(!userId || !hotelName || !fullName || !startDate || !endDate){
-            return res.status(400).json({message: "All fields are required"});
+            const error = new Error("All fields are required");
+            error.statusCode = 400;
+            return next(error);
         }
         let bookingtype;
         const user = await User.findById(userId);
@@ -96,25 +99,31 @@ export const createBooking= async(req,res)=>{
     }
 
     catch(error){
-        return res.status(500).json({message: "Server error"});
+        error.statusCode = 500;
+        next(error);
     }
 }
 
-export const getBookings= async(req,res)=>{
-
- const returnbookings = await Booking.find().populate('userId').populate('hotelId').populate('guests');
-
- res.status(200).json({bookings: returnbookings});
-       
+export const getBookings= async(req,res,next)=>{
+    try{
+        const returnbookings = await Booking.find().populate('userId').populate('hotelId').populate('guests');
+        res.status(200).json({bookings: returnbookings});
     }
+    catch(error){
+        error.statusCode = 500;
+        next(error);
+    }
+}
 
-    export const updateBookingStatus = async (req, res) => {
+    export const updateBookingStatus = async (req, res, next) => {
         const  {bookingId}  = req.params;
          const { status } = req.body;
         console.log("Updating booking status:", bookingId, status);
         try{
             if(!bookingId){
-                return res.status(404).json({message: "Booking not found"});
+                const error = new Error("Booking not found");
+                error.statusCode = 404;
+                return next(error);
             }
             await Booking.findByIdAndUpdate(bookingId, {$set: {status: status}});
 
@@ -122,19 +131,22 @@ export const getBookings= async(req,res)=>{
 
         }
         catch(error){
-            return res.status(500).json({message: "Server error"});
+            error.statusCode = 500;
+            next(error);
         }
 
 
     }
 
-    export const createBookingByManager= async(req,res)=>{
+    export const createBookingByManager= async(req,res,next)=>{
         const {userId,hotelName,guests,startDate,endDate}=req.body;
 
         console.log("Booking by manager details received:", {userId,hotelName,guests,startDate,endDate});
         try{
             if(!userId || !hotelName || !guests || !startDate || !endDate){
-                return res.status(400).json({message: "All fields are required"});
+                const error = new Error("All fields are required");
+                error.statusCode = 400;
+                return next(error);
             } 
              
 
@@ -172,6 +184,7 @@ export const getBookings= async(req,res)=>{
 
         }catch(error){
             console.error("Error creating guest by manager:", error);
-            return res.status(500).json({message: "Server error"});
+            error.statusCode = 500;
+            next(error);
         }
     }

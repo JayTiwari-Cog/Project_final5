@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient,HttpHeaders } from "@angular/common/http";
 import { AuthProvider } from "../services/auth.provider";
+import { environment } from '../../environments/environment';
 
 import { Observable,throwError } from "rxjs";
 
@@ -9,18 +10,19 @@ import { Observable,throwError } from "rxjs";
 })
 
 export class UserService{
-    private registerUrl='http://localhost:3000/api/register'
-    private loginUrl='http://localhost:3000/api/login'
-    private paymentUrl='http://localhost:3000/api/test1'
-    private hotelByNameUrl='http://localhost:3000/api/hotelName';
-    private BookingUrl = `http://localhost:3000/api/book`;
-    private feedbackUrl = 'http://localhost:3000/api/feedback';
-    private getHotelByIdUrl = 'http://localhost:3000/api/hotel';
-    private AddHotelUrl = 'http://localhost:3000/api/hotel';
-    private getAllBookingsUrl = 'http://localhost:3000/api/bookings';
-    private BookingByManagerUrl = 'http://localhost:3000/api/booking';
+  private baseUrl = environment.apiBaseUrl;
+  private registerUrl = `${this.baseUrl}/api/register`;
+  private loginUrl = `${this.baseUrl}/api/login`;
+  private paymentUrl = `${this.baseUrl}/api/createBook`;
+  private hotelByNameUrl = `${this.baseUrl}/api/hotelName`;
+  private BookingUrl = `${this.baseUrl}/api/book`;
+  private feedbackUrl = `${this.baseUrl}/api/feedback`;
+  private getHotelByIdUrl = `${this.baseUrl}/api/hotel`;
+  private AddHotelUrl = `${this.baseUrl}/api/hotel`;
+  private getAllBookingsUrl = `${this.baseUrl}/api/bookings`;
+  private BookingByManagerUrl = `${this.baseUrl}/api/booking`;
 
-    private updateBookingStatusUrl = 'http://localhost:3000/api/bookings';
+  private updateBookingStatusUrl = `${this.baseUrl}/api/bookings`;
     constructor(private http:HttpClient, private authProvider: AuthProvider){}
      registerUser(userData:any):Observable<any>{
         console.log("Registering user",userData);
@@ -41,17 +43,17 @@ export class UserService{
         console.log("Logging in user",loginData);
         return this.http.post<any>(this.loginUrl,loginData);
      }
-     verifyToken(): Observable<any> {
-    const token = this.getToken();
-    if (!token) {
-      return throwError(() => new Error('No token found'));
-    }
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any>('http://localhost:3000/api/verify', { headers });
-  }
+  //    verifyToken(): Observable<any> {
+  //   const token = this.getToken();
+  //   if (!token) {
+  //     return throwError(() => new Error('No token found'));
+  //   }
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this.http.get<any>(`${this.baseUrl}/api/verify`, { headers });
+  // }
 
   setRole(role: string) {
-    localStorage.setItem('userRole', role);
+    sessionStorage.setItem('userRole', role);
   }
   setUserId(userId: string) {
      this.authProvider.setUserId(userId);
@@ -67,7 +69,7 @@ export class UserService{
   }
   getBookingsForUser(userId: string): Observable<any> {
      console.log("Fetching bookings for user:", userId);
-   return this.http.post<any>(this.BookingUrl, { userId });
+  return this.http.post<any>(this.BookingUrl, { userId });
   }
 
   submitFeedback(feedbackData: any): Observable<any> {
@@ -86,7 +88,7 @@ export class UserService{
 
   updateBookingStatus(bookingId: string, status: string): Observable<any> {
     console.log("Updating booking status:", bookingId, status);
-    return this.http.put<any>(`http://localhost:3000/api/bookings/${bookingId}`, { status });
+    return this.http.put<any>(`${this.updateBookingStatusUrl}/${bookingId}`, { status });
   }
 
    
@@ -102,7 +104,7 @@ export class UserService{
   }
   downloadInvoice(invoiceData: any): Observable<Blob> {
     console.log("Downloading invoice with data:", invoiceData);
-  return this.http.post('http://localhost:3000/file/download', invoiceData, { 
+  return this.http.post(`${this.baseUrl}/file/download`, invoiceData, { 
     responseType: 'blob' 
   });
 }

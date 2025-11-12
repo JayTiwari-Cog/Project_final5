@@ -1,26 +1,15 @@
-import jwt from 'jsonwebtoken';
-import express from 'express';
- 
-const app = express();
- 
+import Blacklist from '../models/BlackList.js';
 
+const checkBlacklist = async (req, res, next) => {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) return res.status(401).json({ message: 'No token provided' });
 
-const blacklistedTokens = new Set();
+  const blacklisted = await Blacklist.findOne({ token });
+  if (blacklisted) {
+    return res.status(401).json({ message: 'this user is logged out' });
+  }
 
- 
-function checkBlacklist(req, res, next) {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) return res.sendStatus(401);
-  if (blacklistedTokens.has(token)) return res.status(403).json({ message: 'Token is blacklisted' });
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    req.user = user;
-    next();
-  });
-}
-export { checkBlacklist, blacklistedTokens };
+  next();
+};
 
 export default checkBlacklist;

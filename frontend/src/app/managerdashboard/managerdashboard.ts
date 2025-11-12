@@ -2,8 +2,8 @@ import { Component, Output, EventEmitter, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserBookingData } from '../services/manager-add-user.service';
-import { RoomService } from '../services/managerServices.service';
+// import { UserBookingData } from '../services/manager-add-user.service';
+// import { RoomService } from '../services/managerServices.service';
 
 @Component({
   selector: 'app-managerdashboard',
@@ -14,7 +14,7 @@ import { RoomService } from '../services/managerServices.service';
 })
 export class ManagerDashboardComponent implements OnInit {
   
-  private managerService = inject(RoomService);
+  // private managerService = inject(RoomService);
   private router = inject(Router);
   
  
@@ -34,8 +34,8 @@ export class ManagerDashboardComponent implements OnInit {
   }
 
   private loadServiceData(): void {
-    this.availableHotels = this.managerService.getAvailableHotels();
-    this.availableLocations = this.managerService.getAvailableMaintenanceLocations();
+    // this.availableHotels = this.managerService.getAvailableHotels();
+    // this.availableLocations = this.managerService.getAvailableMaintenanceLocations();
     console.log('Loaded hotels and locations from service');
   }
 
@@ -69,11 +69,11 @@ export class ManagerDashboardComponent implements OnInit {
     this.router.navigate(['/home']);
   }
 
-  onUserAdded(bookingData: UserBookingData) {
-    console.log('Parent received new user booking:', bookingData);
-    this.totalBookingsCreated++;
-    this.backToHub();
-  }
+  // onUserAdded(bookingData: UserBookingData) {
+  //   console.log('Parent received new user booking:', bookingData);
+  //   this.totalBookingsCreated++;
+  //   this.backToHub();
+  // }
 
   onHotelManaged() {
     console.log('Parent received hotel management update');

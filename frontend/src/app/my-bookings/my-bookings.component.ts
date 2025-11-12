@@ -70,14 +70,6 @@ export class MyBookingsComponent implements OnInit {
     console.log('My Bookings - Login status:', this.isLoggedIn, 'Has token in memory:', !!token);
   }
 
-  // loadBookings() {
-  //   // For now, load some mock data
-  //   // In a real application, this would fetch from a service
-  //   this.bookings = [
-      
-  //   ];
-  // }
-
   goBack() {
     this.router.navigate(['/user/hotel-search']);
   }

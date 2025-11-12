@@ -37,7 +37,7 @@ export class Booking implements OnInit {
       console.log('hello',bookingData.hotel)
     }
 
-    // Keep this - guest selection is stored in session storage
+    
     const storedGuestSelection = sessionStorage.getItem('guestSelection');
     if (storedGuestSelection) {
       this.guestSelection = JSON.parse(storedGuestSelection);
@@ -58,7 +58,7 @@ export class Booking implements OnInit {
  
   confirmBooking() {
     this.openBookingDetails = true;
-    // Remove the emit since no parent component is listening
+
   }
   
   goBack() {

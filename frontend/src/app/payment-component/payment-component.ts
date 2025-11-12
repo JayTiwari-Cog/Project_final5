@@ -2,8 +2,8 @@
  
 import { Component, EventEmitter, Input, Output, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { PaymentService } from '../services/payment.service';
-import { HotelService } from '../services/hotel.service';
+// import { PaymentService } from '../services/payment.service';
+import { HotelService } from '../apiService/hotel.service';
 import { SearchStateService } from '../services/search-state.service';
 import { Payment } from '../interfaces/paymentInterface';
 import { CommonModule } from '@angular/common';
@@ -41,7 +41,7 @@ export class PaymentComponent implements OnInit {
   };
  
   constructor(
-    private paymentService: PaymentService, 
+    // private paymentService: PaymentService, 
     private userService:UserService, 
     private router: Router,
     private searchStateService: SearchStateService
@@ -77,7 +77,7 @@ export class PaymentComponent implements OnInit {
       }
 
 
-      console.log("payment data found ", this.data.hotelName);
+      console.log("payment data found ", this.hotel);
       this.fullName=this.data.fullName;
   }
   this.userService.getHotelByName(this.data.hotelName).subscribe({

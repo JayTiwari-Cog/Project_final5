@@ -33,30 +33,34 @@ export class App implements OnInit {
     // Check initial login state
     this.checkLoginStatus();
     
-    // Listen for route changes to update login state and route detection
+    // Listen for route changes to update login state
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: NavigationEnd) => {
       this.checkLoginStatus();
-      this.isManagerRoute = event.url.includes('/manager');
+      // Set manager route based on user role, not URL
+      this.isManagerRoute = this.userRole === 'manager';
     });
   }
 
   checkLoginStatus() {
     // Check if token exists in AuthProvider (in-memory)
     const token = this.authProvider.getToken();
-    const storedRole = localStorage.getItem('userRole');
+    const storedRole = sessionStorage.getItem('userRole');
 
     // User is logged in if token exists in memory
     this.isLoggedIn = !!token;
 
     if (this.isLoggedIn) {
       this.userRole = (storedRole === 'manager' ? 'manager' : 'user') as 'user' | 'manager';
+      // Set manager route flag based on user role
+      this.isManagerRoute = this.userRole === 'manager';
     } else {
       this.userRole = null;
+      this.isManagerRoute = false;
     }
 
-    console.log('Login status checked:', { isLoggedIn: this.isLoggedIn, userRole: this.userRole, hasTokenInMemory: !!token });
+    console.log('Login status checked:', { isLoggedIn: this.isLoggedIn, userRole: this.userRole, isManagerRoute: this.isManagerRoute, hasTokenInMemory: !!token });
   }
 
   // Navigation methods
@@ -111,7 +115,7 @@ export class App implements OnInit {
   logout() {
     
     this.authProvider.clearToken();
-    localStorage.removeItem('userRole');
+    sessionStorage.removeItem('userRole');
     
   
     this.searchStateService.clearSearchState();

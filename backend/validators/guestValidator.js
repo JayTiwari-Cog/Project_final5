@@ -12,6 +12,7 @@ const guestValidator = checkSchema({
     in: ['body'],
     exists: { errorMessage: 'Email is required' },
     isEmail: { errorMessage: 'Email must be valid' },
+    unique: true,
     normalizeEmail: true
   },
   country: {
@@ -28,7 +29,8 @@ const guestValidator = checkSchema({
     isLength: {
       options: { min: 10, max: 15 },
       errorMessage: 'Phone number must be between 10 and 15 digits'
-    }
+    },
+    unique: true,
   }
 });
  

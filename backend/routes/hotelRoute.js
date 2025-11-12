@@ -1,21 +1,18 @@
 import { Router } from "express";
-import { addHotel, getAllHotels, getHotelById, getHotelByLocation, getHotelByName } from "../controllers/HotelController.js";
-import verify from "../middleware/verify_Token.js";
+import { addHotel, getAllHotels, getHotelById, getHotelByName} from "../controllers/HotelController.js";
+ 
 
 import passport from "passport"
 import hotelValidator from "../validators/hotelValidator.js";
+import checkBlacklist from "../middleware/blacklisting_token.js";
+import verifyTokenWithRole from "../middleware/verifyWithRole.js";
 
 const hotel = Router();
 
 
-hotel.get('/hotel',passport.authenticate('jwt', { session: false }),hotelValidator,getAllHotels);
+hotel.get('/hotel',passport.authenticate('jwt', { session: false }),hotelValidator,checkBlacklist,getAllHotels);
 
-hotel.get('/hotels/:city',verify,hotelValidator,getHotelByLocation);
-
-hotel.post('/hotel',verify,hotelValidator,addHotel);
-
-hotel.post('/hotelName',verify,hotelValidator,getHotelByName);
-
-hotel.get('/hotel/:hotelId',verify,hotelValidator,getHotelById);
-
+hotel.post('/hotel',passport.authenticate('jwt', { session: false }),hotelValidator,verifyTokenWithRole(['manager']),addHotel);
+hotel.post('/hotelName',passport.authenticate('jwt', { session: false }),verifyTokenWithRole(['user']),getHotelByName);
+hotel.get('/hotel/:hotelId',passport.authenticate('jwt', { session: false }),hotelValidator,verifyTokenWithRole(['user']),getHotelById);
 export default hotel;

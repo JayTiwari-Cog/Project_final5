@@ -10,6 +10,7 @@ const guestSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true
      
   },
   country: {
@@ -18,7 +19,8 @@ const guestSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    required: true
+    required: true,
+    unique: true
   },
   guestDetails: {
     adults: { type: Number, required: true },

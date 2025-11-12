@@ -1,16 +1,16 @@
 import { Injectable, inject } from '@angular/core';
-import { HotelInterface } from '../interfaces/hotelInterface';
-import { HotelDataService } from './hotel-data.service';
+ 
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
  
 @Injectable({
   providedIn: 'root',
 })
 export class HotelService {
   // private hotelDataService = inject(HotelDataService);
-   private GetHotelUrl='http://localhost:3000/api/hotel';
-   private createGuestUrl='http://localhost:3000/api/guest';
+  private GetHotelUrl = `${environment.apiBaseUrl}/api/hotel`;
+  private createGuestUrl = `${environment.apiBaseUrl}/api/guest`;
   constructor(private httpClient:HttpClient ) {
     console.log('HotelService initialized');
   }

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BookingData } from '../interfaces/bookingInterface';
  
-import { HotelService } from '../services/hotel.service';
+import { HotelService } from '../apiService/hotel.service';
 import { SearchStateService } from '../services/search-state.service';
 
 @Component({

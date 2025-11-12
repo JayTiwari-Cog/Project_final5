@@ -3,13 +3,17 @@ import Feedback from "../models/Feedback.js";
 import User from "../models/User.js";
 import Hotel from "../models/Hotel.js";
 
-export const getBookingsForUser = async (req, res) => {
+export const getBookingsForUser = async (req, res, next) => {
   const { userId } = req.body;
 
   try {
     const user = await User.findById(userId);
     
-    if (!user) return res.status(404).json({ message: "User not found" });
+    if (!user) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      return next(error);
+    }
 
     const bookings = await Booking.find({ userId })
       .populate('hotelId').populate('guests');
@@ -21,23 +25,28 @@ console.log(bookings);
     });
   } catch (error) {
     console.error("Error in getBookingsForUser:", error);
-    return res.status(500).json({ message: "Server error", error: error.message });
+    error.statusCode = 500;
+    next(error);
   }
 };
 
-export const createFeedback = async (req, res) => {
+export const createFeedback = async (req, res, next) => {
   const { userId, hotelName, rating, comment } = req.body;
 
   try {
    
     if (!userId || !hotelName || !rating || !comment) {
-      return res.status(400).json({ message: "All fields are required" });
+      const error = new Error("All fields are required");
+      error.statusCode = 400;
+      return next(error);
     }
 
     // Find hotel by name
     const hotel = await Hotel.findOne({ hotelName });
     if (!hotel) {
-      return res.status(404).json({ message: "Hotel not found" });
+      const error = new Error("Hotel not found");
+      error.statusCode = 404;
+      return next(error);
     }
 
     
@@ -59,9 +68,7 @@ export const createFeedback = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating feedback:", error);
-    return res.status(500).json({
-      message: "Server error",
-      error: error.message
-    });
+    error.statusCode = 500;
+    next(error);
   }
 };
