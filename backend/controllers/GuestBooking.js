@@ -106,8 +106,25 @@ export const createBooking= async(req,res,next)=>{
 
 export const getBookings= async(req,res,next)=>{
     try{
-        const returnbookings = await Booking.find().populate('userId').populate('hotelId').populate('guests');
-        res.status(200).json({bookings: returnbookings});
+        const page=parseInt(req.query.page) || 1;
+        const limit=parseInt(req.query.limit) || 10;
+        const skip=(page-1)*limit;
+        const returnbookings = await Booking.find().skip(skip).limit(limit).populate('userId').populate('hotelId').populate('guests').exec();
+
+        const total = await Booking.countDocuments();
+
+        const totalPages = Math.ceil(total / limit);
+
+
+        res.status(200).json({
+            bookings: returnbookings,
+            pagination:{
+                currentPage: page,
+                totalPages,
+            }
+        
+        }
+        );
     }
     catch(error){
         error.statusCode = 500;

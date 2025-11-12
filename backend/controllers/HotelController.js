@@ -16,9 +16,37 @@ import Hotel from "../models/Hotel.js";
 export const getAllHotels = async (req, res, next) => {
   try {
     console.log("Before DB call");
-    const hotels = await Hotel.find();
+    
+    // Get pagination parameters from query string
+    const page = parseInt(req.query.page) ;
+    const limit = parseInt(req.query.limit);
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination metadata
+    const total = await Hotel.countDocuments();
+    
+    // Fetch hotels with pagination
+    const hotels = await Hotel.find()
+      .skip(skip)
+      .limit(limit)
+      .exec();
+    
     console.log("After DB call", hotels);
-    res.status(200).json(hotels);
+    
+    // Calculate pagination metadata
+    const totalPages = Math.ceil(total / limit);
+    
+    res.status(200).json({
+      hotels,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalItems: total,
+        itemsPerPage: limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      }
+    });
   } catch (error) {
     console.error("Error fetching hotels:", error);
     error.statusCode = 500;
