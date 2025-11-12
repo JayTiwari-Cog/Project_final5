@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
  
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
  
@@ -15,9 +15,13 @@ export class HotelService {
     console.log('HotelService initialized');
   }
 
-  // Get all hotels
-  getHotels():Observable<any>  {
-     return this.httpClient.get<any>(this.GetHotelUrl);
+  // Get all hotels with pagination
+  getHotels(page: number = 1, limit: number = 10):Observable<any>  {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+    
+    return this.httpClient.get<any>(this.GetHotelUrl, { params });
     // return this.hotelDataService.getHotels();
   }
 

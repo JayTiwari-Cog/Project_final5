@@ -27,6 +27,11 @@ export class HotelSearch implements OnInit, OnDestroy {
   dateError: string = '';
   today: string = new Date().toISOString().split('T')[0];
 
+  // Pagination properties
+  currentPage: number = 1;
+  totalPages: number = 0;
+  isLoading: boolean = false;
+
   constructor(
     private hotelService: HotelService, 
     private router: Router, 
@@ -36,11 +41,37 @@ export class HotelSearch implements OnInit, OnDestroy {
   ) {}
    
   ngOnInit(): void {
-    this.hotelService.getHotels().subscribe(hotels => {
-      this.hotels = hotels;
-      console.log(this.hotels);
-    });
+    this.loadHotels();
     this.restoreSearchState();
+  }
+
+  loadHotels(page: number = 1): void {
+    this.isLoading = true;
+    
+    this.hotelService.getHotels(page, 10).subscribe({
+      next: (response) => {
+        this.hotels = response.hotels;
+        this.totalPages = response.pagination.totalPages;
+        this.currentPage = response.pagination.currentPage;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading hotels:', error);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) {
+      this.loadHotels(this.currentPage + 1);
+    }
+  }
+
+  previousPage(): void {
+    
+      this.loadHotels(this.currentPage - 1);
+    
   }
 
   ngOnDestroy(): void {

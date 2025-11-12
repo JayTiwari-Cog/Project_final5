@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient,HttpHeaders } from "@angular/common/http";
+import { HttpClient,HttpHeaders, HttpParams } from "@angular/common/http";
 import { AuthProvider } from "../services/auth.provider";
 import { environment } from '../../environments/environment';
 
@@ -81,9 +81,12 @@ export class UserService{
     return this.http.get<any>(`${this.getHotelByIdUrl}/${hotelId}`);
   }
 
-  getAllBookings(): Observable<any> {
-    console.log("Getting all bookings for manager");
-    return this.http.get<any>(this.getAllBookingsUrl);
+  getAllBookings(page:number,limit:number): Observable<any> {
+
+    const params = new HttpParams().set('page', page.toString()).set('limit', limit.toString());
+    return this.http.get<any>(this.getAllBookingsUrl, { params });
+    // console.log("Getting all bookings for manager");
+    // return this.http.get<any>(this.getAllBookingsUrl);
   }
 
   updateBookingStatus(bookingId: string, status: string): Observable<any> {

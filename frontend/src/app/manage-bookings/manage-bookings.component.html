@@ -140,4 +140,23 @@
       </div>
     </div>
   </div>
+
+  <!-- Pagination Controls -->
+  <div class="pagination-container" *ngIf="!loading && filteredBookings.length > 0">
+    <button 
+      class="pagination-btn" 
+      [disabled]="currentPage === 1"
+      (click)="previousPage()">
+      Previous
+    </button>
+    
+    <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+    
+    <button 
+      class="pagination-btn" 
+      [disabled]="currentPage === totalPages"
+      (click)="nextPage()">
+      Next
+    </button>
+  </div>
 </div>

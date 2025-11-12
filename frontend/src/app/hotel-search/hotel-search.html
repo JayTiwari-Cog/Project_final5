@@ -58,6 +58,12 @@
   </div>
  
   <div *ngIf="searchTriggered" class="hotel-list">
+    <!-- Loading indicator -->
+    <div *ngIf="isLoading" class="loading-container">
+      <div class="loading-spinner">Loading hotels...</div>
+    </div>
+
+    <!-- Hotel cards -->
     <div
       *ngFor="let hotel of hotels | hotelFilter:searchTerm"
       class="hotel-card"
@@ -69,6 +75,25 @@
         <div class="price-tag">₹{{ hotel.pricePerNight }}</div>
         <button class="book-btn" (click)="bookHotel(hotel)">Book Now</button>
       </div>
+    </div>
+
+    <!-- Simple Pagination -->
+    <div class="pagination-container" *ngIf="!isLoading && hotels.length > 0">
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === 1"
+        (click)="previousPage()">
+        Previous
+      </button>
+      
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+      
+      <button 
+        class="pagination-btn" 
+        [disabled]="currentPage === totalPages"
+        (click)="nextPage()">
+        Next
+      </button>
     </div>
   </div>
 </div>

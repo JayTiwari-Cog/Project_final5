@@ -17,6 +17,8 @@ export class ManageBookingsComponent implements OnInit {
   loading: boolean = false;
   searchTerm: string = '';
   selectedStatus: string = 'all';
+  currentPage: number = 1;
+  totalPages: number = 0;
   
   // Track which bookings have had actions performed (keep for session safety)
   processedBookings: Set<string> = new Set();
@@ -30,15 +32,20 @@ export class ManageBookingsComponent implements OnInit {
     this.loadAllBookings();
   }
 
-  loadAllBookings() {
+  loadAllBookings(page:number=1) {
     this.loading = true;
    
-    this.userService.getAllBookings().subscribe({
+    this.userService.getAllBookings(page, 10).subscribe({
       next: (response: any) => {
-        console.log('All bookings loaded:', response);
-        this.allBookings = response.bookings || response || [];
+        // console.log('All bookings loaded:', response);
+        // this.allBookings = response.bookings || response || [];
+        // this.filteredBookings = [...this.allBookings];
+        // console.log('Filtered bookings initialized:', this.filteredBookings);
+
+        this.allBookings = response.bookings;
+        this.currentPage = response.pagination.currentPage;
+        this.totalPages = response.pagination.totalPages;
         this.filteredBookings = [...this.allBookings];
-        console.log('Filtered bookings initialized:', this.filteredBookings);
         this.loading = false;
       },
       error: (error: any) => {
@@ -50,7 +57,15 @@ export class ManageBookingsComponent implements OnInit {
     });
   }
 
-   
+   nextPage(): void {
+     
+      this.loadAllBookings(this.currentPage + 1);
+    
+  }
+
+    previousPage(): void {  
+      this.loadAllBookings(this.currentPage - 1);  
+  }
 
   onSearchChange() {
     this.filteredBookings = this.allBookings.filter(booking => {
